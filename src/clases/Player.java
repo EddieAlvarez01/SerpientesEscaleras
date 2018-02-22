@@ -30,6 +30,11 @@ public class Player {
 		return namePlayer3;
 	}
 	
+	public Player(String namePalyer1, String namePlayer2){
+		this.namePalyer1 = namePalyer1;
+		this.namePlayer2 = namePlayer2;
+	}
+	
 	public Player(String namePalyer1, String namePlayer2, String namePlayer3){
 		this.namePalyer1 = namePalyer1;
 		this.namePlayer2 = namePlayer2;
