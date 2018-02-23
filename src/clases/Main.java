@@ -10,8 +10,10 @@ public class Main {
 		case "1":
 			process.startGame("p", "");
 			break;
-		case "2":
+		case "3":
+			System.exit(0);
 			break;
 		}
+		process.placement("c");
 	}
 }

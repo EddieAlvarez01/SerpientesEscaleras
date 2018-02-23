@@ -2,9 +2,10 @@ package clases;
 
 public class Player {
 	
-	String namePalyer1;
-	String namePlayer2;
-	String namePlayer3;
+	public String namePalyer1;
+	public String namePlayer2;
+	public String namePlayer3;
+	
 	
 	public void setnamePalyer1(String namePalyer1){
 		 this.namePalyer1 = namePalyer1;
