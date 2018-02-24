@@ -2,9 +2,9 @@ package clases;
 
 public class Player {
 	
-	public String namePalyer1;
-	public String namePlayer2;
-	public String namePlayer3;
+	private String namePalyer1;
+	private String namePlayer2;
+	private String namePlayer3;
 	
 	
 	public void setnamePalyer1(String namePalyer1){

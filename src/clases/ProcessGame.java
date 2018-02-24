@@ -6,7 +6,8 @@ import java.util.regex.Pattern;
 
 public class ProcessGame {
 	
-	public String regex;
+	private String regex;
+	Snakke_Ladder snakeLadder = new Snakke_Ladder();
 	
 	public String menu(String initialValidation, String option){
 		System.out.println("\n\n------------------------------------------------------------------------------------------------------");
@@ -30,7 +31,7 @@ public class ProcessGame {
 		}else if(initialValidation.equals("p")){
 			regex = "[12]";
 		}else if(initialValidation.equals("c")){
-			regex = "^([0-9],[1-10];?)+$";
+			regex = "^([0-8],[0-9];?)+$";
 		}
 		Pattern coincidence = Pattern.compile(regex);
 		Matcher match = coincidence.matcher(select_option);
@@ -82,6 +83,14 @@ public class ProcessGame {
 					+ " en la casilla incio(10,10), en la casilla final(0,0), ni tampoco en la fila 10 (10,*)");
 			placement(initialValidation);
 		}
+		snakeLadder.setsnakeCoordinate(coordinate);
+		
+		
 		System.out.println("\n\n Ingrese las coordenadas de las escaleras");
 	}
+	
+	public void checkbox (){
+		
+	}
+	
 }

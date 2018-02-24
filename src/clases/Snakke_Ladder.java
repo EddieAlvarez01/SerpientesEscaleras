@@ -2,8 +2,8 @@ package clases;
 
 public class Snakke_Ladder {
 	
-	public String snakeCoordinate;
-	public String ladderCoordinate;
+	private String snakeCoordinate;
+	private String ladderCoordinate;
 	
 	public void setsnakeCoordinate(String snakeCoordinate){
 		this.snakeCoordinate = snakeCoordinate;
@@ -24,6 +24,10 @@ public class Snakke_Ladder {
 	public Snakke_Ladder(String snakeCoordinate, String ladderCoordinate){
 		this.snakeCoordinate = snakeCoordinate;
 		this.ladderCoordinate = ladderCoordinate;
+	}
+	
+	public Snakke_Ladder(){
+		
 	}
 	
 }
