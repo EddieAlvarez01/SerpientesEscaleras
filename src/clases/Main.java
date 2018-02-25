@@ -14,6 +14,9 @@ public class Main {
 			System.exit(0);
 			break;
 		}
-		process.placement("c");
+		process.placementSnake("c");
+		process.placementLadder("e");
+		Board board = new Board();
+		board.placement();
 	}
 }

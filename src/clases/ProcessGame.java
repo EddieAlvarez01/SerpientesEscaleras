@@ -3,6 +3,7 @@ package clases;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.StringTokenizer;
 
 public class ProcessGame {
 	
@@ -32,6 +33,8 @@ public class ProcessGame {
 			regex = "[12]";
 		}else if(initialValidation.equals("c")){
 			regex = "^([0-8],[0-9];?)+$";
+		}else if(initialValidation.equals("e")){
+			regex = "^([1-9],[0-9];?)+$";
 		}
 		Pattern coincidence = Pattern.compile(regex);
 		Matcher match = coincidence.matcher(select_option);
@@ -72,7 +75,7 @@ public class ProcessGame {
 		}
 	}
 	
-	public void placement(String initialValidation){
+	public void placementSnake(String initialValidation){
 		System.out.println("\n\n Ingrese las coordenadas de las serpientes");
 		System.out.println("Con el siguiente formato (x1,y1;x2,y2;x3,y3...)");
 		System.out.println("Ej.(1,2;2,2;3,2)");
@@ -80,17 +83,102 @@ public class ProcessGame {
 		String coordinate = select_option.next();
 		if(validate(initialValidation, coordinate) == false){
 			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado, no puede haber serpiente"
-					+ " en la casilla incio(10,10), en la casilla final(0,0), ni tampoco en la fila 10 (10,*)");
-			placement(initialValidation);
+					+ " en la casilla incio(9,9), en la casilla final(0,0), ni tampoco en la fila 9 (9,*)");
+			placementSnake(initialValidation);
+		}else if(checkboxSnake(coordinate) == false){
+			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado, no puede haber serpiente"
+					+ " en la casilla incio(9,9), en la casilla final(0,0), ni tampoco en la fila 9 (10,*)");
+			placementSnake(initialValidation);
 		}
 		snakeLadder.setsnakeCoordinate(coordinate);
-		
-		
-		System.out.println("\n\n Ingrese las coordenadas de las escaleras");
 	}
 	
-	public void checkbox (){
-		
+	public void placementLadder(String initialValidation){
+		System.out.println("\n\n Ingrese las coordenadas de las Escaleras");
+		System.out.println("Con el siguiente formato (x1,y1;x2,y2;x3,y3...)");
+		System.out.println("Ej.(1,2;2,2;3,2)");
+		Scanner select_option = new Scanner(System.in);
+		String coordinate = select_option.next();
+		if(validate(initialValidation, coordinate) == false | checkboxLadder(coordinate) == false){
+			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado, no puede haber escalera"
+					+ " en la casilla inicio(9,9), en la casilla final(0,0), ni tampoco en la fila 0 (0,*), "
+					+ "\nni donde este colocada una serpiente,"
+					+ "tampoco abajo de una serpiente (generaria bucle infinito)");
+			placementLadder(initialValidation);
+		}
+		snakeLadder.setladderCoordinate(coordinate);
+	}
+	
+	public boolean checkboxSnake(String coordinate){
+		if(coordinate.equals("0,0")){
+			return false;
+		}
+		StringTokenizer st = new StringTokenizer(coordinate,";");
+		while(st.hasMoreTokens()){
+			String xy = st.nextToken();
+			if(xy.equals("0,0")){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean checkboxLadder(String coordinate){
+		if(coordinate.equals("9,9")||coordinate.equals(snakeLadder.getsnakeCoordinate())){
+			return false;
+		}
+		StringTokenizer st = new StringTokenizer(coordinate,";");
+		StringTokenizer st1 = new StringTokenizer(snakeLadder.getsnakeCoordinate(),";");
+		StringTokenizer nt = new StringTokenizer(coordinate,",;");
+		StringTokenizer nt1 = new StringTokenizer(snakeLadder.getsnakeCoordinate(),",;");
+		String[] snake = new String[st1.countTokens()];
+		String[] ladder = new String[st.countTokens()];
+		Integer[] snakeCor = new Integer[nt.countTokens()]; 
+		Integer[] ladderCor = new Integer[nt1.countTokens()]; 
+		int ii = 0;
+		int kk = 0;
+		while(st.hasMoreTokens()){
+			String xy = st.nextToken();
+			if(xy.equals("9,9")){
+				return false;
+			}
+			ladder[ii] = xy;
+			ii++;
+		}
+		ii=0;
+		while(st1.hasMoreTokens()){
+			String xy = st1.nextToken();
+			snake[kk] = xy;
+			kk++;
+		}
+		for(int i=0; i<ladder.length; i++){
+			for(int k=0; k<snake.length; k++){
+				if(ladder[i].equals(snake[k])){
+					return false;
+				}
+			}
+		}
+		kk=0;
+		while(nt.hasMoreTokens()){
+			String xy = nt.nextToken();
+			xy = xy + nt.nextToken();
+			ladderCor[ii] = Integer.valueOf(xy).intValue();
+			ii++;
+		}
+		while(nt1.hasMoreTokens()){
+			String xy = nt1.nextToken();
+			xy = xy + nt1.nextToken();
+			snakeCor[kk] = Integer.valueOf(xy).intValue()+ 10;
+			kk++;
+		}
+		for(int i=0; i<ladderCor.length; i++){
+			for(int k=0; k<snakeCor.length; k++){
+				if(ladderCor[i] == snakeCor[k]){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 }
