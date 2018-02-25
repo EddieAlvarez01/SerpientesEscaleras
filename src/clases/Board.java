@@ -1,5 +1,7 @@
 package clases;
 
+import java.util.StringTokenizer;
+
 public class Board {
 
 	private String start = "*";
@@ -33,7 +35,25 @@ public class Board {
 	}
 	
 	public void placement(){
-		
+		ProcessGame process = new ProcessGame();
+		if(process.player.getnamePlayer3() != null){
+			process.board[9][9] = start+ "," + player1 + "," + player2 + "," + player3;
+		}else{
+			process.board[9][9] = start+ "," + player1 + "," + player2;
+		}
+		process.board[0][0] = end;
+		StringTokenizer delimiterSnake = new StringTokenizer(process.snakeLadder.getsnakeCoordinate(),",;");
+		StringTokenizer delimiterLadder = new StringTokenizer(process.snakeLadder.getladderCoordinate(),",;");
+		while(delimiterSnake.hasMoreTokens()){
+			Integer x = Integer.valueOf(delimiterSnake.nextToken()).intValue();
+			Integer y = Integer.valueOf(delimiterSnake.nextToken()).intValue();
+			process.board[x][y] = snake;
+		}
+		while(delimiterLadder.hasMoreTokens()){
+			Integer x = Integer.valueOf(delimiterLadder.nextToken()).intValue();
+			Integer y = Integer.valueOf(delimiterLadder.nextToken()).intValue();
+			process.board[x][y] = ladder;
+		}
 	}
 	
 }

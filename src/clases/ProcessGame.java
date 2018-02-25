@@ -4,11 +4,17 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.StringTokenizer;
+import java.util.Random;
 
 public class ProcessGame {
 	
 	private String regex;
 	Snakke_Ladder snakeLadder = new Snakke_Ladder();
+	public String[][] board = new String[9][9];
+	Player player;
+	private String inTurn;
+	private int[] predefinedTurns = new int[2];
+	int turn;
 	
 	public String menu(String initialValidation, String option){
 		System.out.println("\n\n------------------------------------------------------------------------------------------------------");
@@ -61,7 +67,7 @@ public class ProcessGame {
 			String name1 = select_option.next();
 			System.out.println("\n\nIngrese el nombre del jugador 2");
 			String name2 = select_option.next();
-			new Player(name1, name2);
+			player = new Player(name1, name2);
 			break;
 		case "2":
 			System.out.println("\n\nIngrese el nombre del jugador 1");
@@ -70,7 +76,7 @@ public class ProcessGame {
 			name2 = select_option.next();
 			System.out.println("\n\nIngrese el nombre del jugador 3");
 			String name3 = select_option.next();
-			new Player(name1, name2, name3);
+			player = new Player(name1, name2, name3);
 			break;
 		}
 	}
@@ -179,6 +185,102 @@ public class ProcessGame {
 			}
 		}
 		return true;
+	}
+	
+	public void turnPlayer(String moment){
+		if(player.getnamePlayer3() != null){
+			if(moment.equals("r")){
+				for(int i=0; i==2; i++){
+					predefinedTurns[i] = i;
+				}
+				Random random = new Random();
+				for(int i = predefinedTurns.length; i>0; i--){
+					int position = random.nextInt(i);
+					int decomposition = predefinedTurns[i-1];
+					predefinedTurns[i-1] = predefinedTurns[position];
+					predefinedTurns[position] = decomposition;
+				}
+				if(predefinedTurns[0] == 0){
+					inTurn = player.getnamePalyer1();
+					
+				}else if(predefinedTurns[0] == 1){
+					inTurn = player.getnamePlayer2();
+				}else{
+					inTurn = player.getnamePlayer3();
+				}
+				turn = predefinedTurns[0];
+			}else{
+				if(turn == predefinedTurns[2]){
+					if(predefinedTurns[0] == 0){
+						inTurn = player.getnamePalyer1();
+							
+					}else if(predefinedTurns[0] == 1){
+						inTurn = player.getnamePlayer2();
+					}else{
+						inTurn = player.getnamePlayer3();
+					}
+					turn = predefinedTurns[0];
+				}else if(turn == predefinedTurns[0]){
+					if(predefinedTurns[1] == 0){
+						inTurn = player.getnamePalyer1();
+							
+					}else if(predefinedTurns[1] == 1){
+						inTurn = player.getnamePlayer2();
+					}else{
+						inTurn = player.getnamePlayer3();
+					}
+					turn = predefinedTurns[1];
+				}else{
+					if(predefinedTurns[2] == 0){
+						inTurn = player.getnamePalyer1();
+							
+					}else if(predefinedTurns[2] == 1){
+						inTurn = player.getnamePlayer2();
+					}else{
+						inTurn = player.getnamePlayer3();
+					}
+					turn = predefinedTurns[2];
+				}
+			}
+		}else{
+			if(moment.equals("r")){
+				for(int i=0; i==1; i++){
+					predefinedTurns[i] = i;
+				}
+				Random random = new Random();
+				for(int i = predefinedTurns.length; i>0; i--){
+					int position = random.nextInt(i);
+					int decomposition = predefinedTurns[i-1];
+					predefinedTurns[i-1] = predefinedTurns[position];
+					predefinedTurns[position] = decomposition;
+				}
+				if(predefinedTurns[0] == 0){
+					inTurn = player.getnamePalyer1();
+					
+				}else if(predefinedTurns[0] == 1){
+					inTurn = player.getnamePlayer2();
+				}
+				turn = predefinedTurns[0];
+			}else{
+				if(turn == predefinedTurns[1]){
+					if(predefinedTurns[0] == 0){
+						inTurn = player.getnamePalyer1();
+							
+					}else if(predefinedTurns[0] == 1){
+						inTurn = player.getnamePlayer2();
+					}
+					turn = predefinedTurns[0];
+				}else{
+					if(predefinedTurns[1] == 0){
+						inTurn = player.getnamePalyer1();
+							
+					}else if(predefinedTurns[1] == 1){
+						inTurn = player.getnamePlayer2();
+					}
+					turn = predefinedTurns[1];
+				}
+			}
+		}
 	}
 	
 }

@@ -15,19 +15,19 @@ public class Player {
 		return namePalyer1;
 	}
 	
-	public void namePlayer2(String namePlayer2){
+	public void setnamePlayer2(String namePlayer2){
 		 this.namePlayer2 = namePlayer2;
 	}
 	
-	public String namePlayer2(){
+	public String getnamePlayer2(){
 		return namePlayer2;
 	}
 	
-	public void namePlayer3(String namePlayer3){
+	public void setnamePlayer3(String namePlayer3){
 		 this.namePlayer3 = namePlayer3;
 	}
 	
-	public String namePlayer3(){
+	public String getnamePlayer3(){
 		return namePlayer3;
 	}
 	
