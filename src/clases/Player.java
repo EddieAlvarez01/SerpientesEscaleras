@@ -1,5 +1,8 @@
 package clases;
 
+import java.util.Random;
+import java.util.Scanner;
+
 public class Player {
 	
 	private String namePalyer1;
@@ -41,4 +44,26 @@ public class Player {
 		this.namePlayer2 = namePlayer2;
 		this.namePlayer3 = namePlayer3;
 	}
+	
+	public Player(){
+
+	}
+	
+	public int throwDice(){
+		Random random = new Random(System.currentTimeMillis());
+		int dice = random.nextInt(12);
+		if(dice == 0){
+			dice = 1;
+		}
+		random.setSeed(System.currentTimeMillis());
+		return dice;
+	}
+	
+	public int advance(){
+		System.out.println("Escriba el numero de espacios a avanzar (1-99)");
+		Scanner select_option = new Scanner(System.in);
+		int box = select_option.nextInt();
+		return box;
+	}
+	
 }

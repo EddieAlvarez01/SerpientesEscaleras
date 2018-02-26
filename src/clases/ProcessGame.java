@@ -4,17 +4,25 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.StringTokenizer;
+import java.io.IOException;
 import java.util.Random;
 
 public class ProcessGame {
 	
 	private String regex;
 	Snakke_Ladder snakeLadder = new Snakke_Ladder();
-	public String[][] board = new String[9][9];
+	public String[][] boardPrint = new String[10][10];
 	Player player;
 	private String inTurn;
-	private int[] predefinedTurns = new int[2];
+	private int[] predefinedTurns;
 	int turn;
+	int round = 1;
+	
+	public void cls(){
+		for(int i=0; i<100; i++){
+			System.out.println("\n");
+		}
+	}
 	
 	public String menu(String initialValidation, String option){
 		System.out.println("\n\n------------------------------------------------------------------------------------------------------");
@@ -27,7 +35,7 @@ public class ProcessGame {
 		option = select_option.next();
 		if(validate(initialValidation, option) == false){
 			System.out.println("\n\n!Error porfavor ingrese una opcion valida");
-			menu(initialValidation, "");
+		   option =	menu(initialValidation, "");
 		}
 		return option;
 	}
@@ -51,7 +59,7 @@ public class ProcessGame {
 		}
 	}
 	
-	public void startGame(String initialValidation, String option){
+	public String startGame(String initialValidation, String option){
 		System.out.println("\n\nSeleccione el numero de jugadores");
 		System.out.println("1. 2 jugadores");
 		System.out.println("2. 3 jugadores");
@@ -59,8 +67,13 @@ public class ProcessGame {
 		option = select_option.next();
 		if(validate(initialValidation, option) == false){
 			System.out.println("\n\n!Error porfavor ingrese una opcion valida");
-			startGame(initialValidation, "");
+			option = startGame(initialValidation, "");
 		}
+		return option;
+	}
+	
+	public void namePlayers(String option){
+		Scanner select_option = new Scanner(System.in);
 		switch(option){
 		case "1":
 			System.out.println("\n\nIngrese el nombre del jugador 1");
@@ -85,16 +98,19 @@ public class ProcessGame {
 		System.out.println("\n\n Ingrese las coordenadas de las serpientes");
 		System.out.println("Con el siguiente formato (x1,y1;x2,y2;x3,y3...)");
 		System.out.println("Ej.(1,2;2,2;3,2)");
+		System.out.println("nota: no puede haber serpiente en la casilla incio(9,9), en la casilla final(0,0)"
+				+ ", ni tampoco en la fila 9 (9,*)");
 		Scanner select_option = new Scanner(System.in);
 		String coordinate = select_option.next();
 		if(validate(initialValidation, coordinate) == false){
-			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado, no puede haber serpiente"
-					+ " en la casilla incio(9,9), en la casilla final(0,0), ni tampoco en la fila 9 (9,*)");
+			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado");
 			placementSnake(initialValidation);
+			coordinate = snakeLadder.getsnakeCoordinate();
+			
 		}else if(checkboxSnake(coordinate) == false){
-			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado, no puede haber serpiente"
-					+ " en la casilla incio(9,9), en la casilla final(0,0), ni tampoco en la fila 9 (10,*)");
+			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado");
 			placementSnake(initialValidation);
+			coordinate = snakeLadder.getsnakeCoordinate();
 		}
 		snakeLadder.setsnakeCoordinate(coordinate);
 	}
@@ -103,14 +119,19 @@ public class ProcessGame {
 		System.out.println("\n\n Ingrese las coordenadas de las Escaleras");
 		System.out.println("Con el siguiente formato (x1,y1;x2,y2;x3,y3...)");
 		System.out.println("Ej.(1,2;2,2;3,2)");
+		System.out.println("nota: no puede haber escalera en la casilla inicio(9,9), en la casilla final(0,0), en la fila 0 (0,*)"
+				+ "\nen donde este colocada una serpiente y abajo de una serpiente (generaria bucle infinito)");
+		System.out.println("Coordenadas ingresadas de la(s) serpiente(s):"+""+snakeLadder.getsnakeCoordinate());
 		Scanner select_option = new Scanner(System.in);
 		String coordinate = select_option.next();
-		if(validate(initialValidation, coordinate) == false | checkboxLadder(coordinate) == false){
-			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado, no puede haber escalera"
-					+ " en la casilla inicio(9,9), en la casilla final(0,0), ni tampoco en la fila 0 (0,*), "
-					+ "\nni donde este colocada una serpiente,"
-					+ "tampoco abajo de una serpiente (generaria bucle infinito)");
+		if(validate(initialValidation, coordinate) == false){
+			System.out.println("\n\n!Error: ingrese una coordenada con el formato");
 			placementLadder(initialValidation);
+			coordinate = snakeLadder.getladderCoordinate();
+		}else if(checkboxLadder(coordinate) == false){
+			System.out.println("\n\n!Error: ingrese una coordenada con el formato indicado");
+			placementLadder(initialValidation);
+			coordinate = snakeLadder.getladderCoordinate();
 		}
 		snakeLadder.setladderCoordinate(coordinate);
 	}
@@ -179,7 +200,7 @@ public class ProcessGame {
 		}
 		for(int i=0; i<ladderCor.length; i++){
 			for(int k=0; k<snakeCor.length; k++){
-				if(ladderCor[i] == snakeCor[k]){
+				if(ladderCor[i] == snakeCor[k] && ladderCor[i] != null && snakeCor[i] != null){
 					return false;
 				}
 			}
@@ -187,10 +208,40 @@ public class ProcessGame {
 		return true;
 	}
 	
+	public void placement(){
+		Board board = new Board();
+		if(player.getnamePlayer3() != null){
+			boardPrint[9][9] = board.getStart()+ "," + board.getPlayer1() + "," + board.getPlayer2() + "," + board.getPlayer3();
+		}else{
+			boardPrint[9][9] = board.getStart()+ "," + board.getPlayer1() + "," + board.getPlayer2();
+		}
+		boardPrint[0][0] = board.getEnd();
+		StringTokenizer delimiterSnake = new StringTokenizer(snakeLadder.getsnakeCoordinate(),",;");
+		StringTokenizer delimiterLadder = new StringTokenizer(snakeLadder.getladderCoordinate(),",;");
+		while(delimiterSnake.hasMoreTokens()){
+			Integer x = Integer.valueOf(delimiterSnake.nextToken()).intValue();
+			Integer y = Integer.valueOf(delimiterSnake.nextToken()).intValue();
+			boardPrint[x][y] = board.getSnake();
+		}
+		while(delimiterLadder.hasMoreTokens()){
+			Integer x = Integer.valueOf(delimiterLadder.nextToken()).intValue();
+			Integer y = Integer.valueOf(delimiterLadder.nextToken()).intValue();
+			boardPrint[x][y] = board.getLadder();
+		}
+		for(int i=0; i<boardPrint.length; i++){
+			for(int k=0; k<boardPrint[i].length; k++){
+				if(boardPrint[i][k] == null){
+					boardPrint[i][k] = "";
+				}
+			}
+		}
+	}
+	
 	public void turnPlayer(String moment){
 		if(player.getnamePlayer3() != null){
+			predefinedTurns = new int[3];
 			if(moment.equals("r")){
-				for(int i=0; i==2; i++){
+				for(int i=0; i<predefinedTurns.length; i++){
 					predefinedTurns[i] = i;
 				}
 				Random random = new Random();
@@ -212,13 +263,13 @@ public class ProcessGame {
 			}else{
 				if(turn == predefinedTurns[2]){
 					if(predefinedTurns[0] == 0){
-						inTurn = player.getnamePalyer1();
-							
+						inTurn = player.getnamePalyer1();	
 					}else if(predefinedTurns[0] == 1){
 						inTurn = player.getnamePlayer2();
 					}else{
 						inTurn = player.getnamePlayer3();
 					}
+					round++;
 					turn = predefinedTurns[0];
 				}else if(turn == predefinedTurns[0]){
 					if(predefinedTurns[1] == 0){
@@ -229,6 +280,7 @@ public class ProcessGame {
 					}else{
 						inTurn = player.getnamePlayer3();
 					}
+					round++;
 					turn = predefinedTurns[1];
 				}else{
 					if(predefinedTurns[2] == 0){
@@ -239,12 +291,14 @@ public class ProcessGame {
 					}else{
 						inTurn = player.getnamePlayer3();
 					}
+					round++;
 					turn = predefinedTurns[2];
 				}
 			}
 		}else{
+			predefinedTurns = new int[2];
 			if(moment.equals("r")){
-				for(int i=0; i==1; i++){
+				for(int i=0; i<2; i++){
 					predefinedTurns[i] = i;
 				}
 				Random random = new Random();
@@ -269,6 +323,7 @@ public class ProcessGame {
 					}else if(predefinedTurns[0] == 1){
 						inTurn = player.getnamePlayer2();
 					}
+					round++;
 					turn = predefinedTurns[0];
 				}else{
 					if(predefinedTurns[1] == 0){
@@ -277,10 +332,61 @@ public class ProcessGame {
 					}else if(predefinedTurns[1] == 1){
 						inTurn = player.getnamePlayer2();
 					}
+					round++;
 					turn = predefinedTurns[1];
 				}
 			}
 		}
+	}
+	
+	public void printTurns() throws IOException{
+		if(player.getnamePlayer3() != null){
+			for(int i=0; i<3; i++){
+				if(predefinedTurns[i] == 0 ){
+					System.out.println("\n\nTurno"+(i+1)+ ":" + " " + player.getnamePalyer1());
+				}
+				if(predefinedTurns[i] == 1 ){
+					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer2());
+				}
+				if(predefinedTurns[i] == 2 ){
+					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer3());
+				}
+			}
+		}else{
+			for(int i=0; i<2; i++){
+				if(predefinedTurns[i] == 0 ){
+					System.out.println("\n\nTurno"+(i+1)+ ":" + " " + player.getnamePalyer1());
+				}
+				if(predefinedTurns[i] == 1 ){
+					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer2());
+				}
+			}
+		}
+		System.out.println("\nPresione enter para empezar a jugar....");
+		System.in.read();
+	}
+	
+	public void printBoard(){
+		cls();
+		System.out.println("Turno del jugador 1:" + " "+ inTurn + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" 
+		                   + "Ronda:" + " "+ round);
+		System.out.println("                                                                                          ");
+		for(int i=0; i<boardPrint.length; i++){
+			System.out.println("--------------------------------------------------------------------"
+					+ "---------------------------------------------------------------------------------------------");
+			for(int k=0; k<boardPrint[i].length; k++){
+				System.out.print("|" + "\t" + boardPrint[i][k] + "\t");
+			}
+			System.out.println("|");
+			if(i == 9){
+				System.out.println("--------------------------------------------------------------------"
+						+ "---------------------------------------------------------------------------------------------");
+			}
+		}
+	}
+	
+	public void advanceinBoard(int boxes){
+		
 	}
 	
 }

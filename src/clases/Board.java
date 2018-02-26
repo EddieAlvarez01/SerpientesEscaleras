@@ -1,6 +1,6 @@
 package clases;
 
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class Board {
 
@@ -34,26 +34,18 @@ public class Board {
 		return snake;
 	}
 	
-	public void placement(){
+	public String choicetoAdvance(){
+		System.out.println("\n\nElija una de las siguientes opciones para avanzar");
+		System.out.println("1.Tirar dados (numero de 1 - 12)");
+		System.out.println("2.Escribir los espacios a avanzar");
+		Scanner select_option = new Scanner(System.in);
+		String option = select_option.next();
 		ProcessGame process = new ProcessGame();
-		if(process.player.getnamePlayer3() != null){
-			process.board[9][9] = start+ "," + player1 + "," + player2 + "," + player3;
-		}else{
-			process.board[9][9] = start+ "," + player1 + "," + player2;
+		if(process.validate("p", option) == false){
+			System.out.println("\n!Error porfavor ingrese una opcion valida");
+			option = choicetoAdvance();
 		}
-		process.board[0][0] = end;
-		StringTokenizer delimiterSnake = new StringTokenizer(process.snakeLadder.getsnakeCoordinate(),",;");
-		StringTokenizer delimiterLadder = new StringTokenizer(process.snakeLadder.getladderCoordinate(),",;");
-		while(delimiterSnake.hasMoreTokens()){
-			Integer x = Integer.valueOf(delimiterSnake.nextToken()).intValue();
-			Integer y = Integer.valueOf(delimiterSnake.nextToken()).intValue();
-			process.board[x][y] = snake;
-		}
-		while(delimiterLadder.hasMoreTokens()){
-			Integer x = Integer.valueOf(delimiterLadder.nextToken()).intValue();
-			Integer y = Integer.valueOf(delimiterLadder.nextToken()).intValue();
-			process.board[x][y] = ladder;
-		}
+		return option;
 	}
 	
 }
