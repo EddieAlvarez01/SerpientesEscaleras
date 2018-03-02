@@ -4,6 +4,8 @@ import java.io.IOException;
 
 public class Main {
 	
+	private static boolean winner = false;
+	
 	public static void main(String args[]) throws IOException{
 		
 		ProcessGame process = new ProcessGame();
@@ -21,17 +23,26 @@ public class Main {
 		process.placement();
 		process.turnPlayer("r");
 		process.printTurns();
-		process.printBoard();
 		Board board = new Board();
-		option = board.choicetoAdvance();
 		Player player = new Player();
-		switch(option){
-		case "1":
-			process.advanceinBoard(player.throwDice());
-			break;
-		case "2":
-			process.advanceinBoard(player.advance());
-			break;
+		while(winner = true){
+			process.printBoard();
+			option = board.choicetoAdvance();
+			switch(option){
+			case "1":
+				int dice = player.throwDice();
+				System.out.println("\nDado = " + " " + dice);
+				System.out.println("\nPresione enter para aceptar....");
+				System.in.read();
+				winner = process.advanceinBoard(dice);
+				break;
+			case "2":
+				winner = process.advanceinBoard(player.advance());
+				break;
+			case "f":
+				process.turnPlayer("");
+				break;
+			}
 		}
 	}
 }

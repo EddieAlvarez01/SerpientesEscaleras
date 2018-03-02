@@ -49,6 +49,8 @@ public class ProcessGame {
 			regex = "^([0-8],[0-9];?)+$";
 		}else if(initialValidation.equals("e")){
 			regex = "^([1-9],[0-9];?)+$";
+		}else if(initialValidation.equals("a")){
+			regex = "[12fF]";
 		}
 		Pattern coincidence = Pattern.compile(regex);
 		Matcher match = coincidence.matcher(select_option);
@@ -343,22 +345,22 @@ public class ProcessGame {
 		if(player.getnamePlayer3() != null){
 			for(int i=0; i<3; i++){
 				if(predefinedTurns[i] == 0 ){
-					System.out.println("\n\nTurno"+(i+1)+ ":" + " " + player.getnamePalyer1());
+					System.out.println("\n\nTurno "+(i+1)+ ":" + " " + player.getnamePalyer1());
 				}
 				if(predefinedTurns[i] == 1 ){
-					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer2());
+					System.out.println("\n\nJugador "+ (i+1) +":" + " " + player.getnamePlayer2());
 				}
 				if(predefinedTurns[i] == 2 ){
-					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer3());
+					System.out.println("\n\nJugador "+ (i+1) +":" + " " + player.getnamePlayer3());
 				}
 			}
 		}else{
 			for(int i=0; i<2; i++){
 				if(predefinedTurns[i] == 0 ){
-					System.out.println("\n\nTurno"+(i+1)+ ":" + " " + player.getnamePalyer1());
+					System.out.println("\n\nJugador "+(i+1)+ ":" + " " + player.getnamePalyer1());
 				}
 				if(predefinedTurns[i] == 1 ){
-					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer2());
+					System.out.println("\n\nJugador "+ (i+1) +":" + " " + player.getnamePlayer2());
 				}
 			}
 		}
@@ -368,7 +370,7 @@ public class ProcessGame {
 	
 	public void printBoard(){
 		cls();
-		System.out.println("Turno del jugador 1:" + " "+ inTurn + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" 
+		System.out.println("Turno del jugador " +(turn + 1) +  ":" + " "+ inTurn + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" 
 		                   + "Ronda:" + " "+ round);
 		System.out.println("                                                                                          ");
 		for(int i=0; i<boardPrint.length; i++){
@@ -385,8 +387,135 @@ public class ProcessGame {
 		}
 	}
 	
-	public void advanceinBoard(int boxes){
-		
+	public boolean advanceinBoard(int boxes){
+		Board board = new Board();
+		int x = 0;
+		int y = 0;
+		if(turn == 0){
+			for(int i=0; i<boardPrint.length; i++){
+				for(int k=0; k<boardPrint[i].length; k++){
+					if(boardPrint[i][k] != ""){
+						StringTokenizer players = new StringTokenizer(boardPrint[i][k], ",");
+						while(players.hasMoreTokens()){
+							if(players.nextToken().equals(board.getPlayer1())){
+								 x = i;
+								 y = k;
+								Pattern p = Pattern.compile("(,?1,?)");
+								Matcher m = p.matcher(boardPrint[i][k]);
+								if(m.find()){
+									boardPrint[i][k] = m.replaceAll("");
+								}
+							}
+						}
+					}
+				}
+			}
+			for(int i = 1; i<=boxes; i++){
+				y = y-1;
+				if(y == 0){
+					x = x - 1;
+					y = 9;
+					i++;
+				}
+			}
+			if(boardPrint[x][y].equals(board.getSnake())){
+				x = x + 1;
+			}else if(boardPrint[x][y].equals(board.getLadder())){
+				x = x -1;
+			}
+			if(x == 0 && y==0){
+				return true;
+			}
+			if(boardPrint[x][y] != ""){
+				boardPrint[x][y] = boardPrint[x][y] + ",1";
+			}else{
+				boardPrint[x][y] = "1";
+			}
+			turnPlayer("");
+		}else if(turn == 1){
+			for(int i=0; i<boardPrint.length; i++){
+				for(int k=0; k<boardPrint[i].length; k++){
+					if(boardPrint[i][k] != ""){
+						StringTokenizer players = new StringTokenizer(boardPrint[i][k], ",");
+						while(players.hasMoreTokens()){
+							if(players.nextToken().equals(board.getPlayer1())){
+								 x = i;
+								 y = k;
+								Pattern p = Pattern.compile("(,?2,?)");
+								Matcher m = p.matcher(boardPrint[i][k]);
+								if(m.find()){
+									boardPrint[i][k] = m.replaceAll("");
+								}
+							}
+						}
+					}
+				}
+			}
+			for(int i = 1; i<=boxes; i++){
+				y = y-1;
+				if(y == 0){
+					x = x - 1;
+					y = 9;
+					i++;
+				}
+			}
+			if(boardPrint[x][y].equals(board.getSnake())){
+				x = x + 1;
+			}else if(boardPrint[x][y].equals(board.getLadder())){
+				x = x -1;
+			}
+			if(x == 0 && y==0){
+				return true;
+			}
+			if(boardPrint[x][y] != ""){
+				boardPrint[x][y] = boardPrint[x][y] + ",2";
+			}else{
+				boardPrint[x][y] = "2";
+			}
+			turnPlayer("");
+		}else{
+			for(int i=0; i<boardPrint.length; i++){
+				for(int k=0; k<boardPrint[i].length; k++){
+					if(boardPrint[i][k] != ""){
+						StringTokenizer players = new StringTokenizer(boardPrint[i][k], ",");
+						while(players.hasMoreTokens()){
+							if(players.nextToken().equals(board.getPlayer1())){
+								 x = i;
+								 y = k;
+								Pattern p = Pattern.compile("(,?3,?)");
+								Matcher m = p.matcher(boardPrint[i][k]);
+								if(m.find()){
+									boardPrint[i][k] = m.replaceAll("");
+								}
+							}
+						}
+					}
+				}
+			}
+			for(int i = 1; i<=boxes; i++){
+				y = y-1;
+				if(y == 0){
+					x = x - 1;
+					y = 9;
+					i++;
+				}
+			}
+			if(boardPrint[x][y].equals(board.getSnake())){
+				x = x + 1;
+			}else if(boardPrint[x][y].equals(board.getLadder())){
+				x = x -1;
+			}
+			if(x == 0 && y==0){
+				return true;
+			}
+			if(boardPrint[x][y] != ""){
+				boardPrint[x][y] = boardPrint[x][y] + ",3";
+			}else{
+				boardPrint[x][y] = "3";
+			}
+			turnPlayer("");
+		}
+		return false;
 	}
 	
 }
