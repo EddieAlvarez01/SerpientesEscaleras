@@ -36,8 +36,8 @@ public class Board {
 	
 	public String choicetoAdvance(){
 		System.out.println("\n\nElija una de las siguientes opciones para avanzar");
-		System.out.println("1.Tirar dados (numero de 1 - 12)");
-		System.out.println("2.Escribir los espacios a avanzar");
+		System.out.println("1.Tirar dados" + "\t\t Escriba f para saltar el turno");
+		System.out.println("2.Escribir los espacios a avanzar" + "\t\t Escriba p para pausar");
 		System.out.println("O Escriba f para saltar el turno");
 		Scanner select_option = new Scanner(System.in);
 		String option = select_option.next();

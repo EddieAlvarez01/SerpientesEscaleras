@@ -42,15 +42,15 @@ public class ProcessGame {
 	
 	public boolean validate(String initialValidation, String select_option){
 		if(initialValidation.equals("m")){
-			regex = "[13]";
+			regex = "^[13]$";
 		}else if(initialValidation.equals("p")){
-			regex = "[12]";
+			regex = "^[12]$";
 		}else if(initialValidation.equals("c")){
 			regex = "^([0-8],[0-9];?)+$";
 		}else if(initialValidation.equals("e")){
 			regex = "^([1-9],[0-9];?)+$";
 		}else if(initialValidation.equals("a")){
-			regex = "[12fF]";
+			regex = "^[12fFpP]$";
 		}
 		Pattern coincidence = Pattern.compile(regex);
 		Matcher match = coincidence.matcher(select_option);
@@ -241,8 +241,8 @@ public class ProcessGame {
 	
 	public void turnPlayer(String moment){
 		if(player.getnamePlayer3() != null){
-			predefinedTurns = new int[3];
 			if(moment.equals("r")){
+				predefinedTurns = new int[3];
 				for(int i=0; i<predefinedTurns.length; i++){
 					predefinedTurns[i] = i;
 				}
@@ -298,8 +298,8 @@ public class ProcessGame {
 				}
 			}
 		}else{
-			predefinedTurns = new int[2];
 			if(moment.equals("r")){
+				predefinedTurns = new int[2];
 				for(int i=0; i<2; i++){
 					predefinedTurns[i] = i;
 				}
@@ -345,22 +345,22 @@ public class ProcessGame {
 		if(player.getnamePlayer3() != null){
 			for(int i=0; i<3; i++){
 				if(predefinedTurns[i] == 0 ){
-					System.out.println("\n\nTurno "+(i+1)+ ":" + " " + player.getnamePalyer1());
+					System.out.println("\n\nTurno "+(i+1)+ ":" +  " " + player.getnamePalyer1());
 				}
 				if(predefinedTurns[i] == 1 ){
-					System.out.println("\n\nJugador "+ (i+1) +":" + " " + player.getnamePlayer2());
+					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer2());
 				}
 				if(predefinedTurns[i] == 2 ){
-					System.out.println("\n\nJugador "+ (i+1) +":" + " " + player.getnamePlayer3());
+					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer3());
 				}
 			}
 		}else{
 			for(int i=0; i<2; i++){
 				if(predefinedTurns[i] == 0 ){
-					System.out.println("\n\nJugador "+(i+1)+ ":" + " " + player.getnamePalyer1());
+					System.out.println("\n\nTurno "+(i+1)+ ":" + " " + player.getnamePalyer1());
 				}
 				if(predefinedTurns[i] == 1 ){
-					System.out.println("\n\nJugador "+ (i+1) +":" + " " + player.getnamePlayer2());
+					System.out.println("\n\nTurno "+ (i+1) +":" + " " + player.getnamePlayer2());
 				}
 			}
 		}
@@ -370,7 +370,7 @@ public class ProcessGame {
 	
 	public void printBoard(){
 		cls();
-		System.out.println("Turno del jugador " +(turn + 1) +  ":" + " "+ inTurn + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" 
+		System.out.println("Turno del jugador " + ":" + " "+ inTurn + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" 
 		                   + "Ronda:" + " "+ round);
 		System.out.println("                                                                                          ");
 		for(int i=0; i<boardPrint.length; i++){
@@ -391,16 +391,22 @@ public class ProcessGame {
 		Board board = new Board();
 		int x = 0;
 		int y = 0;
-		if(turn == 0){
+		if(turn == predefinedTurns[0]){
 			for(int i=0; i<boardPrint.length; i++){
 				for(int k=0; k<boardPrint[i].length; k++){
 					if(boardPrint[i][k] != ""){
+						if(boardPrint[i][k].equals(board.getPlayer1())){
+							 x = i;
+							 y = k;
+							 boardPrint[i][k] = boardPrint[i][k].replace("1", "");
+							 break;
+						}
 						StringTokenizer players = new StringTokenizer(boardPrint[i][k], ",");
 						while(players.hasMoreTokens()){
 							if(players.nextToken().equals(board.getPlayer1())){
 								 x = i;
 								 y = k;
-								Pattern p = Pattern.compile("(,?1,?)");
+								Pattern p = Pattern.compile("(,?1)||(1,?)");
 								Matcher m = p.matcher(boardPrint[i][k]);
 								if(m.find()){
 									boardPrint[i][k] = m.replaceAll("");
@@ -416,6 +422,9 @@ public class ProcessGame {
 					x = x - 1;
 					y = 9;
 					i++;
+				}
+				if(x<0){
+					x = 0;
 				}
 			}
 			if(boardPrint[x][y].equals(board.getSnake())){
@@ -432,16 +441,22 @@ public class ProcessGame {
 				boardPrint[x][y] = "1";
 			}
 			turnPlayer("");
-		}else if(turn == 1){
+		}else if(turn == predefinedTurns[1]){
 			for(int i=0; i<boardPrint.length; i++){
 				for(int k=0; k<boardPrint[i].length; k++){
 					if(boardPrint[i][k] != ""){
+						if(boardPrint[i][k].equals(board.getPlayer2())){
+							 x = i;
+							 y = k;
+							 boardPrint[i][k] = boardPrint[i][k].replace("2", "");
+							 break;
+						}
 						StringTokenizer players = new StringTokenizer(boardPrint[i][k], ",");
 						while(players.hasMoreTokens()){
-							if(players.nextToken().equals(board.getPlayer1())){
+							if(players.nextToken().equals(board.getPlayer2())){
 								 x = i;
 								 y = k;
-								Pattern p = Pattern.compile("(,?2,?)");
+								Pattern p = Pattern.compile("(,?2)");
 								Matcher m = p.matcher(boardPrint[i][k]);
 								if(m.find()){
 									boardPrint[i][k] = m.replaceAll("");
@@ -457,6 +472,9 @@ public class ProcessGame {
 					x = x - 1;
 					y = 9;
 					i++;
+				}
+				if(x<0){
+					x = 0;
 				}
 			}
 			if(boardPrint[x][y].equals(board.getSnake())){
@@ -477,12 +495,18 @@ public class ProcessGame {
 			for(int i=0; i<boardPrint.length; i++){
 				for(int k=0; k<boardPrint[i].length; k++){
 					if(boardPrint[i][k] != ""){
+						if(boardPrint[i][k].equals(board.getPlayer3())){
+							 x = i;
+							 y = k;
+							 boardPrint[i][k] = boardPrint[i][k].replace("3", "");
+							 break;
+						}
 						StringTokenizer players = new StringTokenizer(boardPrint[i][k], ",");
 						while(players.hasMoreTokens()){
-							if(players.nextToken().equals(board.getPlayer1())){
+							if(players.nextToken().equals(board.getPlayer3())){
 								 x = i;
 								 y = k;
-								Pattern p = Pattern.compile("(,?3,?)");
+								Pattern p = Pattern.compile("(,?3)");
 								Matcher m = p.matcher(boardPrint[i][k]);
 								if(m.find()){
 									boardPrint[i][k] = m.replaceAll("");
@@ -498,6 +522,9 @@ public class ProcessGame {
 					x = x - 1;
 					y = 9;
 					i++;
+				}
+				if(x<0){
+					x = 0;
 				}
 			}
 			if(boardPrint[x][y].equals(board.getSnake())){
