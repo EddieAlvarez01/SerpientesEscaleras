@@ -20,7 +20,7 @@ public class ProcessGame {
 	int round = 1;
 	
 	public void cls(){
-		for(int i=0; i<3; i++){
+		for(int i=0; i<2; i++){
 			System.out.println("\n");
 		}
 	}
@@ -381,19 +381,19 @@ public class ProcessGame {
 	
 	public void printBoard(){
 		cls();
-		System.out.println("Turno del jugador " + ":" + " "+ inTurn + "\t\t\t" 
+		System.out.println("Turno del jugador " + ":" + " "+ inTurn + "\t\t" 
 		                   + "Ronda:" + " "+ round);
 		System.out.println("                                                                                          ");
 		for(int i=0; i<boardPrint.length; i++){
-			System.out.println("--------------------------------------------------------------------"
-					+ "-------------");
+			System.out.println("---------------------------------------------------------------------------------"
+					+ "--------------------------------------------------------------------------------");
 			for(int k=0; k<boardPrint[i].length; k++){
-				System.out.print("|" + boardPrint[i][k] + "\t");
+				System.out.print("|" + "\t" + boardPrint[i][k]  +"\t" );
 			}
 			System.out.println("|");
 			if(i == 9){
-				System.out.println("--------------------------------------------------------------------"
-						+ "-------------");
+				System.out.println("---------------------------------------------------------------------------------"
+						+ "--------------------------------------------------------------------------------");
 			}
 		}
 	}
@@ -592,6 +592,7 @@ public class ProcessGame {
 	}
 	
 	public void cleanBoard(){
+		round = 1;
 		for(int i=0; i<boardPrint.length; i++){
 			for(int k=0; k<boardPrint[i].length; k++){
 				boardPrint[i][k] = null;
