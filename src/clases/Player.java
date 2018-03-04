@@ -46,7 +46,7 @@ public class Player {
 	}
 	
 	public Player(){
-
+		
 	}
 	
 	public int throwDice(){
@@ -60,7 +60,7 @@ public class Player {
 	}
 	
 	public int advance(){
-		System.out.println("Escriba el numero de espacios a avanzar (1-99)");
+		System.out.println("Escriba el numero de espacios a avanzar");
 		Scanner select_option = new Scanner(System.in);
 		int box = select_option.nextInt();
 		return box;
