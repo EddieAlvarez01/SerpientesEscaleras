@@ -66,6 +66,8 @@ public class ProcessGame {
 			regex = "^[yn]$";
 		}else if(initialValidation.equals("d")){
 			regex = "^[fF]$";
+		}else if(initialValidation.equals("b")){
+			regex = "^[0-9]+$";
 		}
 		Pattern coincidence = Pattern.compile(regex);
 		Matcher match = coincidence.matcher(select_option);
@@ -439,7 +441,7 @@ public class ProcessGame {
 					return true;
 				}
 				if(y == 0){
-					if( i < boxes){
+					if( i < boxes || boxes==1){
 						x = x - 1;
 						y = 9;
 						if(changeMovement == false){
@@ -507,7 +509,7 @@ public class ProcessGame {
 					return true;
 				}
 				if(y == 0){
-					if( i < boxes){
+					if( i < boxes || boxes ==1){
 						y = 9;
 						x = x - 1;
 						if(changeMovement == false){
@@ -575,7 +577,7 @@ public class ProcessGame {
 					return true;
 				}
 				if(y == 0){
-					if(i < boxes){
+					if(i < boxes || boxes == 1){
 						y = 9;
 						x = x - 1;
 						if(changeMovement == false){

@@ -62,8 +62,13 @@ public class Player {
 	public int advance(){
 		System.out.println("Escriba el numero de espacios a avanzar");
 		Scanner select_option = new Scanner(System.in);
-		int box = select_option.nextInt();
-		return box;
+		String box = select_option.next();
+		ProcessGame process = new ProcessGame();
+		if(process.validate("b", box) == false){
+			System.out.println("\n!Error porfavor ingrese una opcion valida");
+			box = String.valueOf(advance());
+		}
+		return Integer.parseInt(box);
 	}
 	
 }

@@ -110,6 +110,7 @@ public class Main {
 					reset = false;
 					option = "1";
 					process.cleanBoard();
+					endTurn = false;
 				}
 			}
 			
