@@ -64,6 +64,8 @@ public class ProcessGame {
 			regex = "^[123]$";
 		}else if(initialValidation.equals("f")){
 			regex = "^[yn]$";
+		}else if(initialValidation.equals("d")){
+			regex = "^[fF]$";
 		}
 		Pattern coincidence = Pattern.compile(regex);
 		Matcher match = coincidence.matcher(select_option);
@@ -286,18 +288,7 @@ public class ProcessGame {
 					}
 					round++;
 					turn = predefinedTurns[0];
-				}else if(turn == predefinedTurns[0]){
-					if(predefinedTurns[1] == 0){
-						inTurn = player.getnamePalyer1();
-							
-					}else if(predefinedTurns[1] == 1){
-						inTurn = player.getnamePlayer2();
-					}else{
-						inTurn = player.getnamePlayer3();
-					}
-					round++;
-					turn = predefinedTurns[1];
-				}else{
+				}else if(turn == predefinedTurns[1]){
 					if(predefinedTurns[2] == 0){
 						inTurn = player.getnamePalyer1();
 							
@@ -308,6 +299,17 @@ public class ProcessGame {
 					}
 					round++;
 					turn = predefinedTurns[2];
+				}else{
+					if(predefinedTurns[1] == 0){
+						inTurn = player.getnamePalyer1();
+							
+					}else if(predefinedTurns[1] == 1){
+						inTurn = player.getnamePlayer2();
+					}else{
+						inTurn = player.getnamePlayer3();
+					}
+					round++;
+					turn = predefinedTurns[1];
 				}
 			}
 		}else{
@@ -381,7 +383,7 @@ public class ProcessGame {
 	
 	public void printBoard(){
 		cls();
-		System.out.println("Turno del jugador " + ":" + " "+ inTurn + "\t\t" 
+		System.out.println("Turno del jugador " + ":" + " "+ inTurn + "\t\t\t\t\t" 
 		                   + "Ronda:" + " "+ round);
 		System.out.println("                                                                                          ");
 		for(int i=0; i<boardPrint.length; i++){
@@ -429,14 +431,22 @@ public class ProcessGame {
 				}
 			}
 			for(int i = 1; i<=boxes; i++){
-				y = y-1;
+				if(y != 0){
+					y = y-1;
+					changeMovement = false;
+				}
 				if(y == 0 && x == 0){
 					return true;
 				}
 				if(y == 0){
-					x = x - 1;
-					y = 9;
-					i++;
+					if( i < boxes){
+						x = x - 1;
+						y = 9;
+						if(changeMovement == false){
+							i++;
+							changeMovement = true;
+						}
+					}
 				}
 				if(x<0){
 					x = 0;
@@ -456,12 +466,13 @@ public class ProcessGame {
 					return true;
 				}
 			}while(changeMovement == false);
-			if(boardPrint[x][y] != ""){
-				boardPrint[x][y] = boardPrint[x][y] + ",1";
-			}else{
+			if(boardPrint[x][y].equals("")){
 				boardPrint[x][y] = "1";
+			}else if(boardPrint[x][y].equals("1")){
+				boardPrint[x][y] = "1";
+			}else{
+				boardPrint[x][y] = boardPrint[x][y] + ",1";
 			}
-			turnPlayer("");
 		}else if(turn == predefinedTurns[1]){
 			for(int i=0; i<boardPrint.length; i++){
 				for(int k=0; k<boardPrint[i].length; k++){
@@ -488,14 +499,22 @@ public class ProcessGame {
 				}
 			}
 			for(int i = 1; i<=boxes; i++){
-				y = y-1;
+				if(y != 0){
+					y = y-1;
+					changeMovement = false;
+				}
 				if(y == 0 && x == 0){
 					return true;
 				}
 				if(y == 0){
-					x = x - 1;
-					y = 9;
-					i++;
+					if( i < boxes){
+						y = 9;
+						x = x - 1;
+						if(changeMovement == false){
+							i++;
+							changeMovement = true;
+						}
+					}
 				}
 				if(x<0){
 					x = 0;
@@ -515,12 +534,13 @@ public class ProcessGame {
 					return true;
 				}
 			}while(changeMovement == false);
-			if(boardPrint[x][y] != ""){
-				boardPrint[x][y] = boardPrint[x][y] + ",2";
-			}else{
+			if(boardPrint[x][y].equals("")){
 				boardPrint[x][y] = "2";
+			}else if(boardPrint[x][y].equals("2")){
+				boardPrint[x][y] = "2";
+			}else{
+				boardPrint[x][y] = boardPrint[x][y] + ",2";
 			}
-			turnPlayer("");
 		}else{
 			for(int i=0; i<boardPrint.length; i++){
 				for(int k=0; k<boardPrint[i].length; k++){
@@ -547,14 +567,22 @@ public class ProcessGame {
 				}
 			}
 			for(int i = 1; i<=boxes; i++){
-				y = y-1;
+				if(y != 0){
+					y = y-1;
+					changeMovement = false;
+				}
 				if(y == 0 && x == 0){
 					return true;
 				}
 				if(y == 0){
-					x = x - 1;
-					y = 9;
-					i++;
+					if(i < boxes){
+						y = 9;
+						x = x - 1;
+						if(changeMovement == false){
+							i++;
+							changeMovement = true;
+						}
+					}
 				}
 				if(x<0){
 					x = 0;
@@ -574,13 +602,11 @@ public class ProcessGame {
 					return true;
 				}
 			}while(changeMovement == false);
-			if(boardPrint[x][y] != ""){
-				boardPrint[x][y] = boardPrint[x][y] + ",3";
-			}else{
+			if(boardPrint[x][y].equals("")||boardPrint[x][y].equals("3")){
 				boardPrint[x][y] = "3";
+			}else{
+				boardPrint[x][y] = boardPrint[x][y] + ",3";
 			}
-			turnPlayer("");
-			turnPlayer("");
 		}
 		return false;
 	}

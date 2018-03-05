@@ -11,6 +11,7 @@ public class Main {
 		
 		ProcessGame process = new ProcessGame();
 		String optionPause = null;
+		boolean endTurn = false;
 		String option = process.menu("m", "");
 		do{
 			optionPause = null;
@@ -34,27 +35,44 @@ public class Main {
 			while(winner == false){
 				optionPause = null;
 				process.printBoard();
+				if(endTurn == true){
+					option = board.endTurn();
+					switch(option){
+					case "f":
+						process.turnPlayer("");
+						process.printBoard();
+						break;
+					case "F":
+						process.turnPlayer("");
+						process.printBoard();
+						break;
+					}
+				}
 				option = board.choicetoAdvance();
 				switch(option){
 				case "1":
 					int dice = player.throwDice();
 					System.out.println("\nDado = " + " " + dice);
 					winner = process.advanceinBoard(dice);
+					endTurn = true;
 					if(winner == true){
 						reset = true;
 					}
 					break;
 				case "2":
 					winner = process.advanceinBoard(player.advance());
+					endTurn = true;
 					if(winner == true){
 						reset = true;
 					}
 					break;
 				case "f":
 					process.turnPlayer("");
+					endTurn = false;
 					break;
 				case "F":
 					process.turnPlayer("");
+					endTurn = false;
 					break;
 				case "p":
 					process.cls();
@@ -70,6 +88,7 @@ public class Main {
 				if(optionPause != null){
 					switch(option){
 					case "1":
+						endTurn = false;
 						winner = true;
 						reset = false;
 						option = "1";
@@ -77,6 +96,7 @@ public class Main {
 						break;
 					case "2":
 						winner = false;
+						endTurn = false;
 						break;
 					case "3":
 						System.exit(0);

@@ -51,7 +51,7 @@ public class Player {
 	
 	public int throwDice(){
 		Random random = new Random(System.currentTimeMillis());
-		int dice = random.nextInt(12);
+		int dice = random.nextInt(13);
 		if(dice == 0){
 			dice = 1;
 		}

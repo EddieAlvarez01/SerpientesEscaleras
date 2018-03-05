@@ -48,6 +48,18 @@ public class Board {
 		return option;
 	}
 	
+	public String endTurn(){
+		System.out.println("\n\nIngrese f si desea finalizar su turno");
+		Scanner select_option = new Scanner(System.in);
+		String option = select_option.next();
+		ProcessGame process = new ProcessGame();
+		if(process.validate("d", option) == false){
+			System.out.println("\n!Error porfavor ingrese una opcion valida");
+			option = endTurn();
+		}
+		return option;
+	}
+	
 	
 	public String gameOver(){
 		System.out.println("\n\n¿Desea Iniciar una nueva partida?");
